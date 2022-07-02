@@ -102,7 +102,7 @@ def test_layernorm_parity(shape, amp):
 
     # If not AMP, check out bfloat16
     X = X.bfloat16()
-    _ = triton_layernorm(X).backward()
+    _ = torch.sum(triton_layernorm(X)).backward()
 
 
 @pytest.mark.skipif(not _triton_available, reason="Triton is not available")

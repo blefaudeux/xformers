@@ -100,6 +100,10 @@ def test_layernorm_parity(shape, amp):
             + f" {torch.norm(triton_layernorm.bias.grad)}"
         )
 
+    # If not AMP, check out bfloat16
+    X = X.bfloat16()
+    _ = triton_layernorm(X).backward()
+
 
 @pytest.mark.skipif(not _triton_available, reason="Triton is not available")
 @pytest.mark.parametrize("dtype", [torch.float16, torch.float32, torch.bfloat16])
